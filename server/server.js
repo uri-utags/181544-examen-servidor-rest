@@ -1,5 +1,6 @@
 require('./config/config');
 const express = require('express');
+const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const app = express();
 
@@ -10,7 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use(bodyParser.json());
 
 app.get('/', function (req, res) {
-    res.send('<h1>Bienvenido a mis servidor REST (intercuatrimestral)</h1>)');
+    res.send('<h1>Bienvenido a mis servidor REST (intercuatrimestral)</h1>');
 });
 app.get('/usuarios', function (req, res) {
     res.json({
@@ -59,6 +60,16 @@ app.delete('/usuarios/id:', function(req, res){
         mensaje: 'Usuario eliminado con exito',
         id: id 
     });
+});
+
+mongoose.connect('mongodb://localhost/tienda', {
+    useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useFindAndModify: false,
+  useCreateIndex: true
+}, (err, res) => {
+  if(err) throw err;
+  console.log('BD online');
 });
 
 app.listen(process.env.PORT, () => {
